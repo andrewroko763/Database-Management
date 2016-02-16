@@ -33,7 +33,7 @@ select cid, name
 from customers 
 where cid in 	(select cid from orders 
 		where pid = 'p01' and cid in (select cid from products 
-		where pid = 'p07'))
+		where pid = 'p07'));
 
 	
 --5- ids of products not ordered by any customers who placed order through agent a07 in pid; order from high to low
@@ -59,9 +59,6 @@ where cid in 	(select cid from orders
 	 
 --7- customers who have same discount in dallas or london
 
-select cid,name
-from customers 
-where discount in (select discount from customers where city in ('Dallas', 'London'));
 
 select cid, name 
 from customers 
