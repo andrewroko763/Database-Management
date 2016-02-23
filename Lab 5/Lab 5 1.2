@@ -1,0 +1,60 @@
+﻿--Andrew Rokoszak, Lab 5: Joins
+
+--1-Cities of agents with orders from customer c002
+
+select city
+from agents, orders
+where agents.aid = orders.aid
+and orders.cid = 'c002';
+
+--2-ids of products ordered through any agent who makes at least one order for a customer in dallas; sorted oid H-L
+
+select products.pid
+from products, orders, customers
+where products.pid = orders.pid
+	and customers.cid = orders.cid
+	and customers.city = 'Dallas'
+	Group by products.pid
+	order by pid ASC;
+
+--3-names of customers who have not placed an order-subquery
+
+select name
+from customers
+where cid not in (select cid
+		  from orders);
+
+--4-names of customers who have not placed order-outer join
+
+select name
+from customers
+	full outer join orders on customers.cid = orders.cid
+	where orders.cid is null;
+
+--5-names of customers who placed an order through agent in own city and name of agent
+
+select customers.name
+from customers, orders, agents
+where customers.city = agents.city
+		and orders.cid = customers.cid
+		and agents.aid = orders.aid
+		group by customers.name;
+
+--6-names of customers and agents living in the same city, and name of shared city
+
+select customers.name, agents.name, agents.city
+from customers, agents
+where customers.city = agents.city
+
+--7-name and city of customers who live in city that makes the fewest different kinds of products
+
+select customers.name, products.city
+from customers, products
+where customers.city = products.city
+and products.city in (select city
+			from products
+			group by products.city
+			order by count(products.city)
+			limit 1)
+group by customers.name, products.city
+order by customers.name, products.city
