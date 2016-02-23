@@ -44,7 +44,7 @@ where customers.city = agents.city
 
 select customers.name, agents.name, agents.city
 from customers, agents
-where customers.city = agents.city
+where customers.city = agents.city;
 
 --7-name and city of customers who live in city that makes the fewest different kinds of products
 
@@ -57,4 +57,4 @@ and products.city in (select city
 			order by count(products.city)
 			limit 1)
 group by customers.name, products.city
-order by customers.name, products.city
+order by customers.name, products.city;
